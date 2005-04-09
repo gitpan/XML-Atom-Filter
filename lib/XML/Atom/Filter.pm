@@ -9,11 +9,11 @@ XML::Atom::Filter - easy creation of command line Atom processing tools
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 =head1 SYNOPSIS
 
@@ -70,13 +70,15 @@ sub filter {
     $self->entry($_) for @entries;
 
     ## Remove existing entries so we can add back the processed ones without duplication.
+    my @entryNodes;
     if(XML::Atom->LIBXML()) {
-        my @entryNodes = $feed->{doc}->getElementsByTagNameNS(NS, 'entry') or return;
-        $_->parentNode->removeChild($_) for @entryNodes;
+        @entryNodes = $feed->{doc}->getElementsByTagNameNS(NS, 'entry') or return;
     } else {
-        ## TODO: Do something for XML::XPath.
-        die "XML::XPath is not supported";
+        for my $el ($feed->{doc}->getDocumentElement->childNodes) {
+            push @entryNodes, $el if $el->getName eq 'entry';
+		};
     }
+    $_->parentNode->removeChild($_) for @entryNodes;
     
     $feed->add_entry($_) for @entries;
 
