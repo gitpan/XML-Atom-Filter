@@ -9,11 +9,11 @@ XML::Atom::Filter - easy creation of command line Atom processing tools
 
 =head1 VERSION
 
-Version 0.02
+Version 0.03
 
 =cut
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 =head1 SYNOPSIS
 
@@ -71,7 +71,7 @@ sub filter {
 
     ## Remove existing entries so we can add back the processed ones without duplication.
     my @entryNodes;
-    if(XML::Atom->LIBXML()) {
+    if(*XML::Atom::LIBXML) {
         @entryNodes = $feed->{doc}->getElementsByTagNameNS(NS, 'entry') or return;
     } else {
         for my $el ($feed->{doc}->getDocumentElement->childNodes) {

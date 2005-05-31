@@ -1,5 +1,8 @@
 Revision history for XML-Atom-Filter
 
+0.03    xx April 2005
+        Fixed LIBXML invocation bug.
+        Added example scripts.
 0.02    8 April 2005
         Added support for XML::XPath instead of XML::LibXML.
 0.01    6 April 2005
