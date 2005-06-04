@@ -3,8 +3,8 @@ XML-Atom-Filter
 XML::Atom::Filter eases creation of command line tools to filter and
 process Atom feeds.
 
-This release of XML::Atom::Filter adds support for using XML::XPath
-instead of XML::LibXML.
+This release of XML::Atom::Filter fixes some documentation bugs and
+includes some example scripts.
 
 
 DEPENDENCIES

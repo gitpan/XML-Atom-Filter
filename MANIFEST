@@ -10,3 +10,5 @@ t/02-xpath.t
 t/example.xml
 t/pod-coverage.t
 t/pod.t
+examples/atompost.pl
+examples/atom2linkTL.pl

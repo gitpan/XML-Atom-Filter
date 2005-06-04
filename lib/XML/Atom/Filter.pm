@@ -9,11 +9,11 @@ XML::Atom::Filter - easy creation of command line Atom processing tools
 
 =head1 VERSION
 
-Version 0.03
+Version 0.04
 
 =cut
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 =head1 SYNOPSIS
 
@@ -22,7 +22,7 @@ our $VERSION = '0.03';
     use base qw( XML::Atom::Filter );
     
     sub entry {
-        my ($class, $e) = shift;
+        my ($class, $e) = @_;
         $e->content(uc $e->content);
     }
     
@@ -54,7 +54,7 @@ sub new {
     return bless {}, $class;
 }
 
-=head2 filter([ $fh ])
+=head2 $f->filter([ $fh ])
 
 Read an Atom feed document and apply the filtering process to it. The Atom feed is read from C<$fh>, or C<STDIN> if not given. After the feed is read and parsed, it will be run through the C<pre>, C<entry> (entry by entry), and C<post> methods.
 
@@ -85,7 +85,7 @@ sub filter {
     $self->post($feed);
 }
 
-=head2 pre($feed)
+=head2 $f->pre($feed)
 
 Prepare to process the entries of the feed, an C<XML::Atom::Feed> object. By default, no operation is performed.
 
@@ -93,7 +93,7 @@ Prepare to process the entries of the feed, an C<XML::Atom::Feed> object. By def
 
 sub pre { 1; }
 
-=head2 entry($entry)
+=head2 $f->entry($entry)
 
 Process an entry of the feed, an C<XML::Atom::Entry> object. By default, no operation is performed.
 
@@ -103,7 +103,7 @@ If your filter modifies the content of the entry, you B<must> also modify the en
 
 sub entry { 1; }
 
-=head2 post($feed)
+=head2 $f->post($feed)
 
 Postprocess the feed, an C<XML::Atom::Feed> object, after the entries are individually processed. By default, the feed's XML is printed to C<STDOUT>.
 
