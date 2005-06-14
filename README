@@ -3,8 +3,9 @@ XML-Atom-Filter
 XML::Atom::Filter eases creation of command line tools to filter and
 process Atom feeds.
 
-This release of XML::Atom::Filter fixes some documentation bugs and
-includes some example scripts.
+This release of XML::Atom::Filter provides real filtering ("grep") of
+entries in addition to processing ("map") and fixes the documentation
+for the atompost.pl example script.
 
 
 DEPENDENCIES

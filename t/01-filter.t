@@ -21,6 +21,7 @@ diag('Subclass invoked with class methods');
 		my ($class, $entry) = @_;
 		Test::More::isa_ok($entry, XML::Atom::Entry, 'Processing an XML::Atom::Entry');
 		Test::More::is($entry->id, 'http://www.example.com/2005/04/07/example', 'Processed entry has correct id');
+		$entry;
 	}
 
 	sub post {

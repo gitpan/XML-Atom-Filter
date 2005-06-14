@@ -9,11 +9,11 @@ XML::Atom::Filter - easy creation of command line Atom processing tools
 
 =head1 VERSION
 
-Version 0.04
+Version 0.05
 
 =cut
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 =head1 SYNOPSIS
 
@@ -67,7 +67,7 @@ sub filter {
     $self->pre($feed);
 
     my @entries = $feed->entries;
-    $self->entry($_) for @entries;
+    @entries = grep { $_ } map { $self->entry($_) } @entries;
 
     ## Remove existing entries so we can add back the processed ones without duplication.
     my @entryNodes;
@@ -76,7 +76,7 @@ sub filter {
     } else {
         for my $el ($feed->{doc}->getDocumentElement->childNodes) {
             push @entryNodes, $el if $el->getName eq 'entry';
-		};
+        };
     }
     $_->parentNode->removeChild($_) for @entryNodes;
     
@@ -87,7 +87,7 @@ sub filter {
 
 =head2 $f->pre($feed)
 
-Prepare to process the entries of the feed, an C<XML::Atom::Feed> object. By default, no operation is performed.
+Prepares to process the entries of the feed, an C<XML::Atom::Feed> object. By default, no operation is performed.
 
 =cut
 
@@ -95,17 +95,17 @@ sub pre { 1; }
 
 =head2 $f->entry($entry)
 
-Process an entry of the feed, an C<XML::Atom::Entry> object. By default, no operation is performed.
+Processes an entry of the feed, an C<XML::Atom::Entry> object. Returns the C<XML::Atom::Entry> to include in the resulting feed, or C<undef> to omit the entry. By default, C<$entry> is returned unaltered.
 
 If your filter modifies the content of the entry, you B<must> also modify the entry's C<id>. The Atom feed specification requires entries' C<id> fields to be universally unique.
 
 =cut
 
-sub entry { 1; }
+sub entry { $_[1]; }
 
 =head2 $f->post($feed)
 
-Postprocess the feed, an C<XML::Atom::Feed> object, after the entries are individually processed. By default, the feed's XML is printed to C<STDOUT>.
+Postprocesses the feed, an C<XML::Atom::Feed> object, after the entries are individually processed. By default, the feed's XML is printed to C<STDOUT>.
 
 =cut
 

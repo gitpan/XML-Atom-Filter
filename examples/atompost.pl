@@ -4,7 +4,7 @@ use strict;
 
 =head1 NAME
 
-atom2linkTL.pl - convert regular Atom entries to TypePad TypeList Atom entries
+atompost.pl - post Atom entries to an Atom editing endpoint
 
 =head1 SYNOPSIS
 
@@ -13,13 +13,17 @@ atom2linkTL.pl - convert regular Atom entries to TypePad TypeList Atom entries
 
 =head1 DESCRIPTION
 
-C<atom2linkTL.pl> is an example script for XML::Atom::Filter that converts
-standard Atom entries to TypePad TypeList Atom entries.
+C<atompost.pl> is an example script for XML::Atom::Filter that posts entries
+in processed feeds to an Atom editing endpoint. The invocation syntax is:
 
-See L<http://www.sixapart.com/pronet/docs/typepad_atom_api> for the current
-documentation on TypePad's Atom API extensions. Arbitrary content is displayed
-with Link TypeLists as described in Additional Uses for Link TypeLists at:
-L<http://help.typepad.com/typelists/tips.html#additional_uses_for_link_typelists>
+=over 4
+
+C<atompost.pl> I<endpoint> I<username> I<password>
+
+=back
+
+Note when using Movable Type to use your Atom authentication token for the
+I<password> parameter.
 
 =head1 AUTHOR
 
