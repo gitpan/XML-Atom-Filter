@@ -3,9 +3,8 @@ XML-Atom-Filter
 XML::Atom::Filter eases creation of command line tools to filter and
 process Atom feeds.
 
-This release of XML::Atom::Filter provides real filtering ("grep") of
-entries in addition to processing ("map") and fixes the documentation
-for the atompost.pl example script.
+This release of XML::Atom::Filter works with Atom 1.0 feeds when used with
+XML::Atom 0.13_01 or later.
 
 
 DEPENDENCIES
@@ -27,7 +26,7 @@ To install this module, run the following commands:
 
 COPYRIGHT AND LICENCE
 
-Copyright 2005 Mark Paschal
+Copyright 2005-2006 Mark Paschal <markpasc@markpasc.org>
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

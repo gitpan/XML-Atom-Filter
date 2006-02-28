@@ -9,11 +9,11 @@ XML::Atom::Filter - easy creation of command line Atom processing tools
 
 =head1 VERSION
 
-Version 0.05
+Version 0.06
 
 =cut
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 =head1 SYNOPSIS
 
@@ -31,7 +31,8 @@ our $VERSION = '0.05';
 
 =head1 DESCRIPTION
 
-C<XML::Atom::Filter> supports creation of command line tools to filter and process Atom feeds.
+C<XML::Atom::Filter> supports creation of command line tools to filter and
+process Atom feeds.
 
 =head1 USAGE
 
@@ -41,11 +42,10 @@ package XML::Atom::Filter;
 use XML::Atom;
 use XML::Atom::Feed;
 
-use constant NS => 'http://purl.org/atom/ns#';
-
 =head2 XML::Atom::Filter->new()
 
-Create an instance of the idempotent filter. C<XML::Atom::Filter> can be used as a class or an instance.
+Creates an instance of the identity filter. C<XML::Atom::Filter> can be used as
+a class or an instance.
 
 =cut
 
@@ -56,13 +56,17 @@ sub new {
 
 =head2 $f->filter([ $fh ])
 
-Read an Atom feed document and apply the filtering process to it. The Atom feed is read from C<$fh>, or C<STDIN> if not given. After the feed is read and parsed, it will be run through the C<pre>, C<entry> (entry by entry), and C<post> methods.
+Reads an Atom feed document and applies the filtering process to it. The Atom
+feed is read from C<$fh>, or C<STDIN> if not given. After the feed is read and
+parsed, it will be run through the C<pre>, C<entry> (entry by entry), and
+C<post> methods.
 
 =cut
 
 sub filter {
     my ($self, $fh) = @_;
-    my $feed = XML::Atom::Feed->new($fh || \*STDIN) or return;
+    my $feed = XML::Atom::Feed->new($fh || \*STDIN)
+        or die XML::Atom::Feed->errstr;
 
     $self->pre($feed);
 
@@ -72,7 +76,7 @@ sub filter {
     ## Remove existing entries so we can add back the processed ones without duplication.
     my @entryNodes;
     if(*XML::Atom::LIBXML) {
-        @entryNodes = $feed->{doc}->getElementsByTagNameNS(NS, 'entry') or return;
+        @entryNodes = $feed->{doc}->getElementsByTagNameNS($feed->ns, 'entry') or return;
     } else {
         for my $el ($feed->{doc}->getDocumentElement->childNodes) {
             push @entryNodes, $el if $el->getName eq 'entry';
@@ -87,7 +91,8 @@ sub filter {
 
 =head2 $f->pre($feed)
 
-Prepares to process the entries of the feed, an C<XML::Atom::Feed> object. By default, no operation is performed.
+Prepares to process the entries of the feed, an C<XML::Atom::Feed> object. By
+default, no operation is performed.
 
 =cut
 
@@ -95,9 +100,13 @@ sub pre { 1; }
 
 =head2 $f->entry($entry)
 
-Processes an entry of the feed, an C<XML::Atom::Entry> object. Returns the C<XML::Atom::Entry> to include in the resulting feed, or C<undef> to omit the entry. By default, C<$entry> is returned unaltered.
+Processes an entry of the feed, an C<XML::Atom::Entry> object. Returns the new
+or modified entry reference, or C<undef> if the entry should be removed from
+the filtered feed. By default, no change is made.
 
-If your filter modifies the content of the entry, you B<must> also modify the entry's C<id>. The Atom feed specification requires entries' C<id> fields to be universally unique.
+If your filter modifies the content of the entry, you B<must> also modify the
+entry's C<id>. The Atom feed specification requires entries' C<id> fields to be
+universally unique.
 
 =cut
 
@@ -105,7 +114,8 @@ sub entry { $_[1]; }
 
 =head2 $f->post($feed)
 
-Postprocesses the feed, an C<XML::Atom::Feed> object, after the entries are individually processed. By default, the feed's XML is printed to C<STDOUT>.
+Postprocesses the feed, an C<XML::Atom::Feed> object, after the entries are
+individually processed. By default, the feed's XML is printed to C<STDOUT>.
 
 =cut
 
@@ -125,7 +135,7 @@ your bug as I make changes.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2005 Mark Paschal, All Rights Reserved.
+Copyright 2005-2006 Mark Paschal, All Rights Reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
