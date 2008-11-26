@@ -8,9 +8,10 @@ use lib './lib';
 use XML::Atom::Filter;
 
 
-diag('Have XML::Atom to use XML::XPath, not XML::LibXML');
+# Have XML::Atom use XML::XPath, not XML::LibXML
 BEGIN {
 	if(eval { require XML::XPath; }) {
+		no warnings 'redefine';
 		*XML::Atom::LIBXML = sub() { 0; };
 	} else {
 		SKIP: { skip('No XML::XPath', 7); };

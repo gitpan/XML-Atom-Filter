@@ -13,7 +13,7 @@ Version 0.06
 
 =cut
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 =head1 SYNOPSIS
 
@@ -76,14 +76,14 @@ sub filter {
     ## Remove existing entries so we can add back the processed ones without duplication.
     my @entryNodes;
     if(*XML::Atom::LIBXML) {
-        @entryNodes = $feed->{doc}->getElementsByTagNameNS($feed->ns, 'entry') or return;
+        @entryNodes = $feed->elem->getElementsByTagNameNS($feed->ns, 'entry') or return;
     } else {
-        for my $el ($feed->{doc}->getDocumentElement->childNodes) {
+        for my $el ($feed->elem->getDocumentElement->childNodes) {
             push @entryNodes, $el if $el->getName eq 'entry';
         };
     }
     $_->parentNode->removeChild($_) for @entryNodes;
-    
+
     $feed->add_entry($_) for @entries;
 
     $self->post($feed);
